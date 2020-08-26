@@ -58,7 +58,7 @@ export function typeOf (value: any): Type | CustomType<string> {
 export function isType (value: any, ...types: Type[] | CustomType<string>[]): boolean {
   const type: Type | CustomType<string> = typeOf(value)
 
-  if (type === 'array' && types.includes('iterable')) return true
+  if (type === TArray && types.includes(TIterable)) return true
 
   return types.includes(type as any)
 }
