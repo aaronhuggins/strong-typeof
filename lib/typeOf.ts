@@ -1,5 +1,5 @@
-import { TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise } from './types'
-import type { Type } from './types'
+import { TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise, getCustomTypes } from './types'
+import type { CustomType, Type } from './types'
 
 /** Returns the given type of a value. */
 export function typeOf(value: string): 'string'
@@ -14,33 +14,43 @@ export function typeOf(value: null): 'null'
 export function typeOf(value: Array<any>): 'array'
 export function typeOf(value: Promise<any>): 'promise'
 export function typeOf(value: Iterable<any>): 'iterable'
-export function typeOf(value: any): Type
-export function typeOf (value: any): Type {
-  let actualType = typeof value
+export function typeOf(value: any): Type | CustomType<string>
+export function typeOf (value: any): Type | CustomType<string> {
+  let actualType: Type | CustomType<string> = typeof value
 
   switch (actualType) {
     case 'object':
-      if (value === null) return TNull
-      if (Array.isArray(value)) return TArray
-      if (value.constructor.name === 'Promise') return TPromise
-      if (typeof value[Symbol.iterator] === TFunction) return TIterable
+      if (value === null) actualType = TNull
+      if (Array.isArray(value)) actualType = TArray
+      if (value.constructor.name === 'Promise') actualType = TPromise
+      if (typeof value[Symbol.iterator] === TFunction) actualType = TIterable
     case TFunction:
-      if (value.constructor.name === 'AsyncFunction') return TAsyncFunction
-    default:
-      return actualType
+      if (value.constructor.name === 'AsyncFunction') actualType = TAsyncFunction
   }
+
+  const typeMap = getCustomTypes(actualType as Type)
+
+  for (const [customType, typeCheck] of typeMap.entries()) {
+    if (typeCheck(value) === customType) {
+      actualType = customType
+
+      break
+    }
+  }
+
+  return actualType
 }
 
 /** Checks the given value against one or more types. */
-export function isType (value: any, ...types: Type[]): boolean {
-  const type = typeOf(value)
+export function isType (value: any, ...types: Type[] | CustomType<string>[]): boolean {
+  const type: Type | CustomType<string> = typeOf(value)
 
   if (type === 'array' && types.includes('iterable')) return true
 
-  return types.includes(type)
+  return types.includes(type as any)
 }
 
-export function constrainTypes (types: Array<Type | Type[]>, ...values: any[]): Error | void {
+export function constrainTypes (types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, ...values: any[]): Error | void {
   for (let i = 0; i < values.length; i += 0) {
     const value = values[i]
     const type = types[i]
@@ -60,7 +70,7 @@ export function constrainTypes (types: Array<Type | Type[]>, ...values: any[]): 
   }
 }
 
-export function looseType (type: Type | Type[], ...values: any[]) {
+export function looseType (type: Type | Type[] | CustomType<string> | CustomType<string>[], ...values: any[]) {
   const types = typeof type === 'string' ? [type] : type
 
   for (let i = 0; i < values.length; i += 0) {
