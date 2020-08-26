@@ -9,7 +9,8 @@
     "target": "es2020",
     "outDir": "dist",
     "declaration": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "types": ["mocha", "node"]
   },
 
   "exclude": ["node_modules", "dist", "esm", "gulpfile.ts", "test/index.test.ts"]
