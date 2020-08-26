@@ -1,5 +1,3 @@
-/** @internal Custom Types are internal */
-
 import { Type } from './types'
 
 export type CustomType<T> = T
