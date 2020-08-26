@@ -3,7 +3,7 @@ import {
   addCustomType,
   CustomType,
   isType,
-  supportedTypes,
+  getBuiltinTypes,
   StrongFunction,
   WeakFunction,
   TArray,
@@ -127,8 +127,8 @@ describe('StrongTypeOf', () => {
   })
 
   it('should cover remaining scenarios', () => {
-    const supported = supportedTypes()
-    const badThis = supportedTypes.call(false)
+    const supported = getBuiltinTypes()
+    const badThis = getBuiltinTypes.call(false)
 
     // Adds one more thing to custom object check
     addCustomType('object', 'customType', () => {

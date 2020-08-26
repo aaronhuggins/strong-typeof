@@ -28,8 +28,8 @@ export const TAsyncFunction: Type = 'asyncfunction'
 export const TPromise: Type = 'promise'
 export const TIterable: Type = 'iterable'
 
-/** Export the list of built-in supported types. */
-export function supportedTypes (): Type[] {
+/** Export the list of built-in types. */
+export function getBuiltinTypes (): Type[] {
   const result: Type[] = []
   let thisModule = this
 
@@ -47,6 +47,8 @@ export function supportedTypes (): Type[] {
   return result
 }
 
+const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
+const customTypeRoots = new Map<Type, CustomType<string>[]>()
 /** @default false */
 let ENABLE_CUSTOM_TYPES = false
 
@@ -56,9 +58,6 @@ export function enableCustomTypes (enable?: boolean) {
 
   return (ENABLE_CUSTOM_TYPES = enable)
 }
-
-export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
-export const customTypeRoots = new Map<Type, CustomType<string>[]>()
 
 /** Add a custom type globally to be used with the `typeOf` method. */
 export function addCustomType<T, Param> (
