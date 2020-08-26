@@ -66,7 +66,7 @@ export function isType (value: any, ...types: Type[] | CustomType<string>[]): bo
 }
 
 export function constrainTypes (types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, ...values: any[]): Error | void {
-  for (let i = 0; i < values.length; i += 0) {
+  for (let i = 0; i < values.length; i += 1) {
     const value = values[i]
     const type = types[i]
     let result = false
@@ -88,7 +88,7 @@ export function constrainTypes (types: Array<Type | Type[] | CustomType<string> 
 export function looseType (type: Type | Type[] | CustomType<string> | CustomType<string>[], ...values: any[]) {
   const types = typeof type === 'string' ? [type] : type
 
-  for (let i = 0; i < values.length; i += 0) {
+  for (let i = 0; i < values.length; i += 1) {
     const value = values[i]
     let result = isType(value, ...types)
 
