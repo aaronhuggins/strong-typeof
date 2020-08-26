@@ -1,5 +1,6 @@
 import { isType, constrainTypes, looseType } from './typeOf'
-import { CustomType, Type, TAsyncFunction, TFunction } from './types'
+import { Type, TAsyncFunction, TFunction } from './types'
+import { CustomType } from './customTypes'
 
 type ArgumentLike<T> = Array<T>
 type AsyncFunctionLike<A, T> = (...args: ArgumentLike<A>) => Promise<T>

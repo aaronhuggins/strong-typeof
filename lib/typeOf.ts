@@ -1,15 +1,5 @@
-import {
-  CustomType,
-  Type,
-  TArray,
-  TAsyncFunction,
-  TFunction,
-  TIterable,
-  TNull,
-  TPromise,
-  getCustomTypes,
-  enableCustomTypes
-} from './types'
+import { Type, TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise } from './types'
+import { CustomType, getCustomTypes, enableCustomTypes } from './customTypes'
 
 /** Returns the given type of a value. */
 export function typeOf (value: string): 'string'

@@ -3,6 +3,7 @@ import {
   addCustomType,
   CustomType,
   isType,
+  constrainTypes,
   getBuiltinTypes,
   StrongFunction,
   WeakFunction,
@@ -134,6 +135,9 @@ describe('StrongTypeOf', () => {
     addCustomType('object', 'customType', () => {
       return 'customType'
     })
+
+    // Validates last branch of type constraints
+    constrainTypes([(12 as unknown) as string], 'check')
 
     strictEqual(typeOf(supported), 'array')
     strictEqual(badThis.length, 13)
