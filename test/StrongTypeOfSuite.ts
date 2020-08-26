@@ -10,14 +10,19 @@ describe('StrongTypeOf', () => {
       }
     }
 
-    addCustomType('object', customType, customTypeCheck)
-
     const myObject = {
       duck: 'type'
     }
     const notMyObject = {}
 
-    strictEqual(isType(myObject, customType), true)
+    console.time('customTypeFalse')
     strictEqual(isType(notMyObject, customType), false)
+    console.timeEnd('customTypeFalse')
+
+    addCustomType('object', customType, customTypeCheck)
+
+    console.time('customTypeTrue')
+    strictEqual(isType(myObject, customType), true)
+    console.timeEnd('customTypeTrue')
   })
 })
