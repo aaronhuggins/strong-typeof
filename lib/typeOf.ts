@@ -20,12 +20,26 @@ export function typeOf (value: any): Type | CustomType<string> {
 
   switch (actualType) {
     case 'object':
-      if (value === null) actualType = TNull
-      if (Array.isArray(value)) actualType = TArray
-      if (value.constructor.name === 'Promise') actualType = TPromise
-      if (typeof value[Symbol.iterator] === TFunction) actualType = TIterable
+      if (value === null) {
+        actualType = TNull
+        break
+      }
+      if (Array.isArray(value)) {
+        actualType = TArray
+        break
+      }
+      if (value.constructor.name === 'Promise') {
+        actualType = TPromise
+        break
+      }
+      if (typeof value[Symbol.iterator] === TFunction) {
+        actualType = TIterable
+        break
+      }
+      break
     case TFunction:
       if (value.constructor.name === 'AsyncFunction') actualType = TAsyncFunction
+      break
   }
 
   const typeMap = getCustomTypes(actualType as Type)
@@ -33,7 +47,6 @@ export function typeOf (value: any): Type | CustomType<string> {
   for (const [customType, typeCheck] of typeMap.entries()) {
     if (typeCheck(value) === customType) {
       actualType = customType
-
       break
     }
   }
