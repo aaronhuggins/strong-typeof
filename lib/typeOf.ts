@@ -1,4 +1,4 @@
-import { TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise, getCustomTypes } from './types'
+import { TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise, getCustomTypes, enableCustomTypes } from './types'
 import type { CustomType, Type } from './types'
 
 /** Returns the given type of a value. */
@@ -42,12 +42,14 @@ export function typeOf (value: any): Type | CustomType<string> {
       break
   }
 
-  const typeMap = getCustomTypes(actualType as Type)
+  if (enableCustomTypes()) {
+    const typeMap = getCustomTypes(actualType as Type)
 
-  for (const [customType, typeCheck] of typeMap.entries()) {
-    if (typeCheck(value) === customType) {
-      actualType = customType
-      break
+    for (const [customType, typeCheck] of typeMap.entries()) {
+      if (typeCheck(value) === customType) {
+        actualType = customType
+        break
+      }
     }
   }
 

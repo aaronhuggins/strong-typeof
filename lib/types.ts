@@ -1,9 +1,5 @@
 export type Type = 'object' | 'array' | 'null' | 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'function' | 'asyncfunction' | 'promise' | 'iterable'
-
 export type CustomType<T> = T
-
-export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
-export const customTypeRoots = new Map<Type, CustomType<string>[]>()
 
 export const TObject: Type = 'object'
 export const TArray: Type = 'array'
@@ -18,6 +14,17 @@ export const TFunction: Type = 'function'
 export const TAsyncFunction: Type = 'asyncfunction'
 export const TPromise: Type = 'promise'
 export const TIterable: Type = 'iterable'
+
+let ENABLE_CUSTOM_TYPES = false
+
+export function enableCustomTypes (enable?: boolean) {
+  if (typeof enable === 'undefined') return ENABLE_CUSTOM_TYPES
+
+  return ENABLE_CUSTOM_TYPES = enable
+}
+
+export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
+export const customTypeRoots = new Map<Type, CustomType<string>[]>()
 
 export function supportedTypes (): Type[] {
   const result: Type[] = []
@@ -38,6 +45,7 @@ export function supportedTypes (): Type[] {
 }
 
 export function addCustomType<T, Param>(rootType: Type, customType: CustomType<T>, typeCheck: (value: Param) => CustomType<T>) {
+  enableCustomTypes(true)
   customTypeChecks.set(customType as CustomType<any>, typeCheck as any)
 
   let customTypes = customTypeRoots.get(rootType)
