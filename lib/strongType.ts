@@ -1,6 +1,5 @@
 import { isType, constrainTypes, looseType } from './typeOf'
-import { TAsyncFunction, TFunction } from './types'
-import type { CustomType, Type } from './types'
+import { CustomType, Type, TAsyncFunction, TFunction } from './types'
 
 type ArgumentLike<T> = Array<T>
 type AsyncFunctionLike<A, T> = (...args: ArgumentLike<A>) => Promise<T>
@@ -9,9 +8,18 @@ type FunctionLike<A, T> = (...args: ArgumentLike<A>) => T
 /** StrongFunction accepts arguments of any type and throws an error for
  * the first argument which does not match its corresponding type, or that is out of bounds.
  */
-export function StrongFunction<T>(types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, fn: FunctionLike<any, T>): FunctionLike<any, T>
-export function StrongFunction<T>(types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, fn: AsyncFunctionLike< any, T>): AsyncFunctionLike<any, T>
-export function StrongFunction<T>(types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, fn: FunctionLike<any, T> | AsyncFunctionLike< any, T>): FunctionLike<any, T> | AsyncFunctionLike<any, T> {
+export function StrongFunction<T> (
+  types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
+  fn: FunctionLike<any, T>
+): FunctionLike<any, T>
+export function StrongFunction<T> (
+  types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
+  fn: AsyncFunctionLike<any, T>
+): AsyncFunctionLike<any, T>
+export function StrongFunction<T> (
+  types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
+  fn: FunctionLike<any, T> | AsyncFunctionLike<any, T>
+): FunctionLike<any, T> | AsyncFunctionLike<any, T> {
   if (!isType(fn, TFunction, TAsyncFunction)) throw new TypeError('Argument fn is required and must be a function.')
   const self = this
   let func: FunctionLike<any, T> | AsyncFunctionLike<any, T>
@@ -27,9 +35,9 @@ export function StrongFunction<T>(types: Array<Type | Type[] | CustomType<string
   } else {
     func = function (...args: any[]) {
       const error = constrainTypes(types, ...args)
-  
+
       if (error) throw error
-  
+
       return fn.call(self, ...args)
     }
   }
@@ -42,9 +50,18 @@ export function StrongFunction<T>(types: Array<Type | Type[] | CustomType<string
 /** WeakFunction accepts one or more arguments of one or more types and
  * throws an error for the first argument which does not match the type(s).
  */
-export function WeakFunction<A, T>(type: Type | Type[] | CustomType<string> | CustomType<string>[], fn: FunctionLike<A, T>): FunctionLike<A, T>
-export function WeakFunction<A, T>(type: Type | Type[] | CustomType<string> | CustomType<string>[], fn: AsyncFunctionLike<A, T>): AsyncFunctionLike<A, T>
-export function WeakFunction<A, T>(type: Type | Type[] | CustomType<string> | CustomType<string>[], fn: FunctionLike<A, T> | AsyncFunctionLike<A, T>): FunctionLike<A, T> | AsyncFunctionLike<A, T> {
+export function WeakFunction<A, T> (
+  type: Type | Type[] | CustomType<string> | CustomType<string>[],
+  fn: FunctionLike<A, T>
+): FunctionLike<A, T>
+export function WeakFunction<A, T> (
+  type: Type | Type[] | CustomType<string> | CustomType<string>[],
+  fn: AsyncFunctionLike<A, T>
+): AsyncFunctionLike<A, T>
+export function WeakFunction<A, T> (
+  type: Type | Type[] | CustomType<string> | CustomType<string>[],
+  fn: FunctionLike<A, T> | AsyncFunctionLike<A, T>
+): FunctionLike<A, T> | AsyncFunctionLike<A, T> {
   if (!isType(fn, TFunction, TAsyncFunction)) throw new TypeError('Argument fn is required and must be a function.')
   const self = this
   let func: FunctionLike<A, T> | AsyncFunctionLike<A, T>
@@ -60,9 +77,9 @@ export function WeakFunction<A, T>(type: Type | Type[] | CustomType<string> | Cu
   } else {
     func = function (...args: any[]) {
       const error = looseType(type, ...args)
-  
+
       if (error) throw error
-  
+
       return fn.call(self, ...args)
     }
   }

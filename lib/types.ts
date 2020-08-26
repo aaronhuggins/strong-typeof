@@ -1,4 +1,17 @@
-export type Type = 'object' | 'array' | 'null' | 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'function' | 'asyncfunction' | 'promise' | 'iterable'
+export type Type =
+  | 'object'
+  | 'array'
+  | 'null'
+  | 'string'
+  | 'number'
+  | 'bigint'
+  | 'boolean'
+  | 'symbol'
+  | 'undefined'
+  | 'function'
+  | 'asyncfunction'
+  | 'promise'
+  | 'iterable'
 export type CustomType<T> = T
 
 export const TObject: Type = 'object'
@@ -20,7 +33,7 @@ let ENABLE_CUSTOM_TYPES = false
 export function enableCustomTypes (enable?: boolean) {
   if (typeof enable === 'undefined') return ENABLE_CUSTOM_TYPES
 
-  return ENABLE_CUSTOM_TYPES = enable
+  return (ENABLE_CUSTOM_TYPES = enable)
 }
 
 export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
@@ -44,7 +57,11 @@ export function supportedTypes (): Type[] {
   return result
 }
 
-export function addCustomType<T, Param>(rootType: Type, customType: CustomType<T>, typeCheck: (value: Param) => CustomType<T>) {
+export function addCustomType<T, Param> (
+  rootType: Type,
+  customType: CustomType<T>,
+  typeCheck: (value: Param) => CustomType<T>
+) {
   enableCustomTypes(true)
   customTypeChecks.set(customType as CustomType<any>, typeCheck as any)
 
@@ -58,7 +75,7 @@ export function addCustomType<T, Param>(rootType: Type, customType: CustomType<T
   customTypeRoots.set(rootType, customTypes)
 }
 
-export function getCustomTypes(rootType: Type) {
+export function getCustomTypes (rootType: Type) {
   const customTypeMap = new Map<CustomType<string>, (value: any) => CustomType<string>>()
   const customTypes = customTypeRoots.get(rootType)
 

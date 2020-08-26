@@ -1,4 +1,25 @@
-import { typeOf, addCustomType, CustomType, isType, supportedTypes, StrongFunction, WeakFunction, TArray, TAsyncFunction, TBigInt, TBoolean, TFunction, TIterable, TNull, TNumber, TObject, TPromise, TString, TSymbol, TUndefined } from '../index'
+import {
+  typeOf,
+  addCustomType,
+  CustomType,
+  isType,
+  supportedTypes,
+  StrongFunction,
+  WeakFunction,
+  TArray,
+  TAsyncFunction,
+  TBigInt,
+  TBoolean,
+  TFunction,
+  TIterable,
+  TNull,
+  TNumber,
+  TObject,
+  TPromise,
+  TString,
+  TSymbol,
+  TUndefined
+} from '../index'
 import { strictEqual, throws, rejects } from 'assert'
 
 describe('StrongTypeOf', () => {
@@ -25,10 +46,42 @@ describe('StrongTypeOf', () => {
   it('should type check function arguments at runtime', async () => {
     const success = 'success'
     const unwrapped = (...args: any[]) => success
-    const typeArray = [TArray, TAsyncFunction, TBigInt, TBoolean, TFunction, TIterable, TNull, TNumber, TObject, TPromise, TString, TSymbol, TUndefined]
-    const argArray: any[] = [[], async () => {}, 10n, true, () => {}, new Set(), null, 10, {}, new Promise(() => {}), success, Symbol.iterator, undefined]
-    const strongFunction = StrongFunction(typeArray, function confirm (a, b, c, d, e, f, g, h, i, j, k, l, m) { return success })
-    const strongAsyncFunction = StrongFunction(typeArray, async function confirm (a, b, c, d, e, f, g, h, i, j, k, l, m) { return await Promise.resolve(success) })
+    const typeArray = [
+      TArray,
+      TAsyncFunction,
+      TBigInt,
+      TBoolean,
+      TFunction,
+      TIterable,
+      TNull,
+      TNumber,
+      TObject,
+      TPromise,
+      TString,
+      TSymbol,
+      TUndefined
+    ]
+    const argArray: any[] = [
+      [],
+      async () => {},
+      10n,
+      true,
+      () => {},
+      new Set(),
+      null,
+      10,
+      {},
+      new Promise(() => {}),
+      success,
+      Symbol.iterator,
+      undefined
+    ]
+    const strongFunction = StrongFunction(typeArray, function confirm (a, b, c, d, e, f, g, h, i, j, k, l, m) {
+      return success
+    })
+    const strongAsyncFunction = StrongFunction(typeArray, async function (a, b, c, d, e, f, g, h, i, j, k, l, m) {
+      return await Promise.resolve(success)
+    })
     const weakFunction = WeakFunction(TIterable, unwrapped)
     const weakAsyncFunction = WeakFunction(TUndefined, async (...args: any[]) => await Promise.resolve(success))
     const multiTypeStrongFunction = StrongFunction([[TString, TNumber], TBoolean], unwrapped)
@@ -50,10 +103,10 @@ describe('StrongTypeOf', () => {
     strictEqual(strongFunction.name, 'confirm')
 
     throws(() => {
-      StrongFunction([], {} as unknown as () => {})
+      StrongFunction([], ({} as unknown) as () => {})
     })
     throws(() => {
-      WeakFunction([], {} as unknown as () => {})
+      WeakFunction([], ({} as unknown) as () => {})
     })
     throws(() => {
       strongFunction(...[...argArray, 12])
@@ -76,9 +129,11 @@ describe('StrongTypeOf', () => {
   it('should cover remaining scenarios', () => {
     const supported = supportedTypes()
     const badThis = supportedTypes.call(false)
-    
+
     // Adds one more thing to custom object check
-    addCustomType('object', 'customType', () => { return 'customType' })
+    addCustomType('object', 'customType', () => {
+      return 'customType'
+    })
 
     strictEqual(typeOf(supported), 'array')
     strictEqual(badThis.length, 13)

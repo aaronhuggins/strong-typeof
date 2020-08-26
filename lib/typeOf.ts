@@ -1,20 +1,30 @@
-import { TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise, getCustomTypes, enableCustomTypes } from './types'
-import type { CustomType, Type } from './types'
+import {
+  CustomType,
+  Type,
+  TArray,
+  TAsyncFunction,
+  TFunction,
+  TIterable,
+  TNull,
+  TPromise,
+  getCustomTypes,
+  enableCustomTypes
+} from './types'
 
 /** Returns the given type of a value. */
-export function typeOf(value: string): 'string'
-export function typeOf(value: number): 'number'
-export function typeOf(value: bigint): 'bigint'
-export function typeOf(value: boolean): 'boolean'
-export function typeOf(value: symbol): 'symbol'
-export function typeOf(value: undefined): 'undefined'
-export function typeOf(value: Function): 'function'
-export function typeOf(value: object): 'object'
-export function typeOf(value: null): 'null'
-export function typeOf(value: Array<any>): 'array'
-export function typeOf(value: Promise<any>): 'promise'
-export function typeOf(value: Iterable<any>): 'iterable'
-export function typeOf(value: any): Type | CustomType<string>
+export function typeOf (value: string): 'string'
+export function typeOf (value: number): 'number'
+export function typeOf (value: bigint): 'bigint'
+export function typeOf (value: boolean): 'boolean'
+export function typeOf (value: symbol): 'symbol'
+export function typeOf (value: undefined): 'undefined'
+export function typeOf (value: Function): 'function'
+export function typeOf (value: object): 'object'
+export function typeOf (value: null): 'null'
+export function typeOf (value: Array<any>): 'array'
+export function typeOf (value: Promise<any>): 'promise'
+export function typeOf (value: Iterable<any>): 'iterable'
+export function typeOf (value: any): Type | CustomType<string>
 export function typeOf (value: any): Type | CustomType<string> {
   let actualType: Type | CustomType<string> = typeof value
 
@@ -65,7 +75,10 @@ export function isType (value: any, ...types: Type[] | CustomType<string>[]): bo
   return types.includes(type as any)
 }
 
-export function constrainTypes (types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>, ...values: any[]): Error | void {
+export function constrainTypes (
+  types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
+  ...values: any[]
+): Error | void {
   for (let i = 0; i < values.length; i += 1) {
     const value = values[i]
     const type = types[i]
