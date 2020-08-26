@@ -75,6 +75,7 @@ export function isType (value: any, ...types: Type[] | CustomType<string>[]): bo
   return types.includes(type as any)
 }
 
+/** Constrains the given values to the array of types provided. */
 export function constrainTypes (
   types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
   ...values: any[]
@@ -98,6 +99,7 @@ export function constrainTypes (
   }
 }
 
+/** Looser constraint of each given value to one or more provided types. */
 export function looseType (type: Type | Type[] | CustomType<string> | CustomType<string>[], ...values: any[]) {
   const types = typeof type === 'string' ? [type] : type
 

@@ -28,17 +28,7 @@ export const TAsyncFunction: Type = 'asyncfunction'
 export const TPromise: Type = 'promise'
 export const TIterable: Type = 'iterable'
 
-let ENABLE_CUSTOM_TYPES = false
-
-export function enableCustomTypes (enable?: boolean) {
-  if (typeof enable === 'undefined') return ENABLE_CUSTOM_TYPES
-
-  return (ENABLE_CUSTOM_TYPES = enable)
-}
-
-export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
-export const customTypeRoots = new Map<Type, CustomType<string>[]>()
-
+/** Export the list of built-in supported types. */
 export function supportedTypes (): Type[] {
   const result: Type[] = []
   let thisModule = this
@@ -57,6 +47,20 @@ export function supportedTypes (): Type[] {
   return result
 }
 
+/** @default false */
+let ENABLE_CUSTOM_TYPES = false
+
+/** Get the status or set custom types to enabled/disabled. */
+export function enableCustomTypes (enable?: boolean) {
+  if (typeof enable === 'undefined') return ENABLE_CUSTOM_TYPES
+
+  return (ENABLE_CUSTOM_TYPES = enable)
+}
+
+export const customTypeChecks = new Map<CustomType<string>, (value: any) => CustomType<string>>()
+export const customTypeRoots = new Map<Type, CustomType<string>[]>()
+
+/** Add a custom type globally to be used with the `typeOf` method. */
 export function addCustomType<T, Param> (
   rootType: Type,
   customType: CustomType<T>,
@@ -75,6 +79,7 @@ export function addCustomType<T, Param> (
   customTypeRoots.set(rootType, customTypes)
 }
 
+/** Get the custom types associated with a given built-in type. */
 export function getCustomTypes (rootType: Type) {
   const customTypeMap = new Map<CustomType<string>, (value: any) => CustomType<string>>()
   const customTypes = customTypeRoots.get(rootType)
