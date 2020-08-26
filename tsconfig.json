@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "removeComments": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es2020",
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true
+  },
+
+  "exclude": ["node_modules", "dist", "esm", "gulpfile.ts", "test/index.test.ts"]
+}
