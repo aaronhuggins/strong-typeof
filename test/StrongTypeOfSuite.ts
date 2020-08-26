@@ -20,7 +20,7 @@ import {
   TString,
   TSymbol,
   TUndefined
-} from '../index'
+} from '../src/index'
 import { strictEqual, throws, rejects } from 'assert'
 
 describe('StrongTypeOf', () => {
@@ -65,6 +65,7 @@ describe('StrongTypeOf', () => {
     const argArray: any[] = [
       [],
       async () => {},
+      // @ts-ignore
       10n,
       true,
       () => {},
