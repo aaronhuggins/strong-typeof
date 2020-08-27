@@ -1,6 +1,7 @@
 import {
   typeOf,
   addCustomType,
+  setCustomTypes,
   CustomType,
   isType,
   constrainTypes,
@@ -21,7 +22,7 @@ import {
   TSymbol,
   TUndefined
 } from '../src/index'
-import { strictEqual, throws, rejects } from 'assert'
+import { strictEqual, throws, rejects, doesNotThrow } from 'assert'
 
 describe('StrongTypeOf', () => {
   it('should validate custom type', () => {
@@ -36,12 +37,23 @@ describe('StrongTypeOf', () => {
       duck: 'type'
     }
     const notMyObject = {}
+    const customTypeEntries: Array<[CustomType<string>, (value: any) => CustomType<string>]> = [
+      ['custom1', (val: any) => { return val === 'kirk' ? 'custom1' : undefined }],
+      ['custom2', (val: any) => { return val === 'spock' ? 'custom2' : undefined }]
+    ]
 
     strictEqual(isType(notMyObject, customType), false)
 
     addCustomType('object', customType, customTypeCheck)
 
     strictEqual(isType(myObject, customType), true)
+
+    doesNotThrow(() => {
+      setCustomTypes('string', customTypeEntries)
+    })
+    doesNotThrow(() => {
+      setCustomTypes('string', new Map(customTypeEntries))
+    })
   })
 
   it('should type check function arguments at runtime', async () => {
@@ -138,12 +150,16 @@ describe('StrongTypeOf', () => {
     const badThis = getBuiltinTypes.call(false)
 
     // Adds one more thing to custom object check
-    addCustomType('object', 'customType', () => {
-      return 'customType'
+    doesNotThrow(() => {
+      addCustomType('object', 'customType', () => {
+        return 'customType'
+      })
     })
 
     // Validates last branch of type constraints
-    constrainTypes([(12 as unknown) as string], 'check')
+    doesNotThrow(() => {
+      constrainTypes([(12 as unknown) as string], 'check')
+    })
 
     strictEqual(typeOf(supported), 'array')
     strictEqual(badThis.length, 13)
