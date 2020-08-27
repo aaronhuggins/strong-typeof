@@ -38,8 +38,18 @@ describe('StrongTypeOf', () => {
     }
     const notMyObject = {}
     const customTypeEntries: Array<[CustomType<string>, (value: any) => CustomType<string>]> = [
-      ['custom1', (val: any) => { return val === 'kirk' ? 'custom1' : undefined }],
-      ['custom2', (val: any) => { return val === 'spock' ? 'custom2' : undefined }]
+      [
+        'custom1',
+        (val: any) => {
+          return val === 'kirk' ? 'custom1' : undefined
+        }
+      ],
+      [
+        'custom2',
+        (val: any) => {
+          return val === 'spock' ? 'custom2' : undefined
+        }
+      ]
     ]
 
     strictEqual(isType(notMyObject, customType), false)
