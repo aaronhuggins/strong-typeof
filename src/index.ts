@@ -1,4 +1,4 @@
 export * from './customTypes'
-export * from './strongType'
+export * from './typedFunctions'
 export * from './typeOf'
 export * from './types'
