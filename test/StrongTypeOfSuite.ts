@@ -122,6 +122,9 @@ describe('StrongTypeOf', () => {
     strictEqual(weakFunction.isWeakFunction, true)
 
     throws(() => {
+      strongFunction(...argArray.slice(0, 4))
+    })
+    throws(() => {
       StrongFunction([], ({} as unknown) as () => {})
     })
     throws(() => {
@@ -143,6 +146,14 @@ describe('StrongTypeOf', () => {
     rejects(async () => {
       await weakAsyncFunction(1)
     })
+
+    // Confirm that the function's instance of 'this' matches passed thisArg
+    const thisArg = Object.create(null)
+    const thisFunc = StrongFunction([], function () {
+      strictEqual(this, thisArg)
+    })
+
+    thisFunc.call(thisArg)
   })
 
   it('should cover remaining scenarios', () => {

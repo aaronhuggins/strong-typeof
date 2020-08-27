@@ -78,6 +78,12 @@ export function constrainTypes (
   types: Array<Type | Type[] | CustomType<string> | CustomType<string>[]>,
   ...values: any[]
 ): Error | void {
+  const trailingValues = types.length - values.length
+
+  for (let i = 0; i < trailingValues; i += 1) {
+    values.push(undefined)
+  }
+
   for (let i = 0; i < values.length; i += 1) {
     const value = values[i]
     const type = types[i]
