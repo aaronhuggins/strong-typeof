@@ -103,6 +103,11 @@ describe('StrongTypeOf', () => {
     strictEqual(weakAsyncResult, success)
     strictEqual(multiWeakResult, success)
     strictEqual(strongFunction.name, 'confirm')
+    strictEqual(strongFunction.isStrongFunction, true)
+    strictEqual(strongFunction.isWeakFunction, false)
+    strictEqual(weakFunction.untypedFunction, unwrapped)
+    strictEqual(weakFunction.isStrongFunction, false)
+    strictEqual(weakFunction.isWeakFunction, true)
 
     throws(() => {
       StrongFunction([], ({} as unknown) as () => {})
