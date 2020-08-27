@@ -23,6 +23,7 @@ export function enableCustomTypes (enable?: boolean) {
 }
 
 /** Add a custom type globally to be used with the `typeOf` method.
+ * Automatically sets custom types to enabled.
  * @category Custom Type
  */
 export function addCustomType<T, Param> (
@@ -60,6 +61,7 @@ export function getCustomTypes (rootType: Type) {
 }
 
 /** Set the custom types associated with a given built-in type.
+ * Automatically sets custom types to enabled.
  * @category Custom Type
  */
 export function setCustomTypes (
