@@ -23,6 +23,17 @@ type TypedAsyncFunction<A, T> = AsyncFunctionLike<A, T> & {
 
 /** StrongFunction accepts arguments of any type and throws an error for
  * the first argument which does not match its corresponding type, or that is out of bounds.
+ * 
+ * ```js
+ * const confirm = StrongFunction(['string', 'number'], function confirm (str, num = 1) {
+ *   // Types matched!
+ *   return str + num.toString()
+ * })
+ * 
+ * confirm('Number is :')     // Number is: 1
+ * confirm('Number is :', 42) // Number is: 42
+ * confirm(12)                // throws error.
+ * ```
  * @category Factory
  */
 export function StrongFunction<T> (
@@ -68,6 +79,18 @@ export function StrongFunction<T> (
 
 /** WeakFunction accepts one or more arguments of one or more types and
  * throws an error for the first argument which does not match the type(s).
+ * 
+ * ```js
+ * const confirm = WeakFunction(['string', 'number'], function confirm (...args) {
+ *   // Types matched!
+ *   return args.join(' ')
+ * })
+ * 
+ * confirm('Number is :')     // Number is:
+ * confirm('Number is :', 42) // Number is: 42
+ * confirm(12, 15, 'abc')     // 12 15 abc
+ * confirm(42, 'abc', null)   // throws error.
+ * ```
  * @category Factory
  */
 export function WeakFunction<A, T> (

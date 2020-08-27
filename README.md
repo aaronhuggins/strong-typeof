@@ -26,4 +26,4 @@ Package also exports as ES Module with TS definitions for use with Deno and Type
 
 ## API
 
-See the [API documentation](https://ahuggins-nhs.github.io/strong-typeof/) for complete information.
+See the [API documentation](https://ahuggins-nhs.github.io/strong-typeof/globals.html) for complete information.
