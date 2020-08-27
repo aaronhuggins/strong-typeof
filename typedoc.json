@@ -1,3 +1,4 @@
 {
-  "inputFiles": ["src/index.ts"]
+  "inputFiles": ["src/index.ts"],
+  "mode": "file"
 }

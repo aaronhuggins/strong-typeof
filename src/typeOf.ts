@@ -1,7 +1,9 @@
 import { Type, TArray, TAsyncFunction, TFunction, TIterable, TNull, TPromise } from './types'
 import { CustomType, getCustomTypes, enableCustomTypes } from './customTypes'
 
-/** Returns the given type of a value. */
+/** Returns the given type of a value.
+ * @category Strong TypeOf
+ */
 export function typeOf (value: string): 'string'
 export function typeOf (value: number): 'number'
 export function typeOf (value: bigint): 'bigint'
@@ -56,7 +58,9 @@ export function typeOf (value: any): Type | CustomType<string> {
   return actualType
 }
 
-/** Checks the given value against one or more types. */
+/** Checks the given value against one or more types.
+ * @category Strong TypeOf
+ */
 export function isType (value: any, ...types: Type[] | CustomType<string>[]): boolean {
   const type: Type | CustomType<string> = typeOf(value)
 
@@ -67,6 +71,7 @@ export function isType (value: any, ...types: Type[] | CustomType<string>[]): bo
 
 /**
  * Constrains the given values to the array of types provided.
+ * @category Strong TypeOf
  * @private
  */
 export function constrainTypes (
@@ -94,6 +99,7 @@ export function constrainTypes (
 
 /**
  * Looser constraint of each given value to one or more provided types.
+ * @category Strong TypeOf
  * @private
  */
 export function looseType (type: Type | Type[] | CustomType<string> | CustomType<string>[], ...values: any[]) {
