@@ -30,7 +30,7 @@ export function typeOf (value: any): Type | CustomType<string> {
         actualType = TArray
         break
       }
-      if (value.constructor.name === 'Promise') {
+      if (value.constructor && value.constructor.name === 'Promise') {
         actualType = TPromise
         break
       }
@@ -40,7 +40,7 @@ export function typeOf (value: any): Type | CustomType<string> {
       }
       break
     case TFunction:
-      if (value.constructor.name === 'AsyncFunction') actualType = TAsyncFunction
+      if (value.constructor && value.constructor.name === 'AsyncFunction') actualType = TAsyncFunction
       break
   }
 
